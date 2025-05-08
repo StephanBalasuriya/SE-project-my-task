@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/success" element={<Success />} />
         <Route path="/notices" element={<NoticesAndTaskCenter />} />
-        <Route path="/add" element={<AddAnnouncement />} />
+        <Route path="announcements/new" element={<AddAnnouncement />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>

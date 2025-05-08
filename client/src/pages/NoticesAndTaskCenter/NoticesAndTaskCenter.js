@@ -61,12 +61,13 @@ export default function NoticesAndAnnouncements() {
       <div className="card">
         <div className="card-header">
           <h2>Create Announcement</h2>
-          <button className="button">Add New Announcement</button>
+          <button className="button" onClick={() => window.location.href = '/announcements/new'}>Add New Announcement</button>
         </div>
       </div>
 
       <div className="filters">
         <select onChange={(e) => setCourseFilter(e.target.value)} value={courseFilter}>
+          {/* ///////////////////////////////////// this want to change according to cources/////////////////// */}
           <option value="All">All</option>
           <option value="Financial Analyst Course">Financial Analyst Course</option>
           <option value="Trello Fundamentals">Trello Fundamentals</option>

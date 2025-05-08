@@ -1,45 +1,104 @@
-/* styles/NewAnnouncement.css */
-.new-announcement-form {
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .new-announcement-form h2 {
-    margin-bottom: 20px;
-  }
-  
-  .new-announcement-form label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  
-  .new-announcement-form input,
-  .new-announcement-form select,
-  .new-announcement-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .new-announcement-form button {
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .new-announcement-form button:hover {
-    background-color: #0056b3;
-  }
-  
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  display: grid;
+}
+
+.modal {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 400px;
+  max-width: 90%;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.send-to-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 5px;
+}
+
+.send-to-buttons {
+  padding: 15px 20px;
+  border: none;
+  border-radius: 5px;
+}
+.dropdown {
+  position: relative;
+}
+
+.dropdown-selected {
+  padding: 8px;
+  background: #f2f2f2;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.dropdown-list {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-top: 2px;
+  list-style: none;
+  padding: 0;
+  border-radius: 5px;
+  z-index: 10;
+}
+.arrow {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+
+.dropdown-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+.dropdown-list li:hover {
+  background: #eee;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cancel {
+  background: none;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+
+.publish {
+  background: #007bff;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
