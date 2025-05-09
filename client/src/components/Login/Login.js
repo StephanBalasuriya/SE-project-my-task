@@ -61,9 +61,9 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         /><br />
-        <label>
+        {/* <label>
           <input type="checkbox" /> Remember me
-        </label><br />
+        </label><br /> */}
         <button type="submit" className="login-btn">Sign in</button>
       </form>
       <hr />

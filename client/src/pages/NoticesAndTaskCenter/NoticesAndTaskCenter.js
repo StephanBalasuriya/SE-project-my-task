@@ -107,7 +107,7 @@ export default function NoticesAndAnnouncements() {
 
             {openDetails[item.id] && (
               <div className="announcement-detail">
-                <h4 className='created-by'>Created by: {item.created_by}</h4>
+                <h4 className='-createdby'>Created by: {item.created_by}</h4>
                 <p className='announcementcontain'>{item.detail}</p>
               </div>
             )}
