@@ -9,8 +9,11 @@ const AnnouncementModal = ({ onClose }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [sento, setSentTo] = useState(0); // 1 = all, 2 = batch, 3 = course
   const [batch, setBatch] = useState("");
+  const [showBatchDropdown, setShowBatchDropdown] = useState(false);
+  const [BatchDropdown, setBatchDropdown] = useState(false);
 
   const courses = ["Complete Financial Analyst Course", "All Courses", "Other Courses"];
+  const batches = ["Batch 1", "Batch 2", "Batch 3"];
 
   useEffect(() => {
     if (sento !== 3) setShowDropdown(false);
@@ -59,7 +62,21 @@ const AnnouncementModal = ({ onClose }) => {
           {sento === 2 && (
             <>
               <label>Batch</label>
-              <input type="text" placeholder="Batch Name or ID" value={batch} onChange={(e) => setBatch(e.target.value)} required />
+              {/* <input type="text" placeholder="Batch Name or ID" value={batch} onChange={(e) => setBatch(e.target.value)} required /> */}
+              <div className="dropdown">
+                <div onClick={() => setShowDropdown(!showDropdown)} className="dropdown-selected">
+                  {batch || "Select a batch..."} <span className="arrow">&#9660;</span>
+                </div>
+                {showDropdown && (
+
+                  <ul className="dropdown-list">
+                    {batches.map((b, i) => (
+                      <li key={i} onClick={() => { setBatch(b); setShowDropdown(false); }}>{b}</li>
+                    ))}
+                  </ul>
+                  
+                )}
+              </div>            
             </>
           )}
 
@@ -71,13 +88,32 @@ const AnnouncementModal = ({ onClose }) => {
                   {course || "Select a course..."} <span className="arrow">&#9660;</span>
                 </div>
                 {showDropdown && (
+
                   <ul className="dropdown-list">
                     {courses.map((c, i) => (
                       <li key={i} onClick={() => { setCourse(c); setShowDropdown(false); }}>{c}</li>
                     ))}
                   </ul>
+                  
                 )}
+              
               </div>
+             
+              <button type="button" onClick={() => {setShowBatchDropdown(!showBatchDropdown)}} className={sento === 2 ? "active" : ""}>Batch</button>
+              {showBatchDropdown &&(<div className="dropdown">
+                <div onClick={() => setBatchDropdown(!BatchDropdown)} className="dropdown-selected">
+                  {batch || "Select a batch..."} <span className="arrow">&#9660;</span>
+                </div>
+                {BatchDropdown && (
+
+                  <ul className="dropdown-list">
+                    {batches.map((b, i) => (
+                      <li key={i} onClick={() => { setBatch(b); setBatchDropdown(false); }}>{b}</li>
+                    ))}
+                  </ul>
+                  
+                )}
+              </div>)}
             </>
           )}
 

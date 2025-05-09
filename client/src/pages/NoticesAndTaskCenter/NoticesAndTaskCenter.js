@@ -22,7 +22,7 @@ export default function NoticesAndAnnouncements() {
           sort: sortOrder,
           course: courseFilter,
           date: searchDate,
-          fields: 'id,title,date,detail', // backend should honor this param
+          fields: 'id,title,date,detail,created_by', // backend should honor this param
         },
       });
       setAnnouncements(response.data);
@@ -107,7 +107,8 @@ export default function NoticesAndAnnouncements() {
 
             {openDetails[item.id] && (
               <div className="announcement-detail">
-                <p>{item.detail}</p>
+                <h4 className='created-by'>Created by: {item.created_by}</h4>
+                <p className='announcementcontain'>{item.detail}</p>
               </div>
             )}
           </div>
