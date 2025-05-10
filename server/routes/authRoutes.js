@@ -4,7 +4,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.post('/login', authController.manualLogin);
+// router.post('/login', authController.manualLogin);
 
 router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })

@@ -7,10 +7,20 @@ import Login from './components/Login/Login';
 import NoticesAndTaskCenter from './pages/NoticesAndTaskCenter/NoticesAndTaskCenter';
 import AddAnnouncement from './pages/AddAnnouncement/AddAnnouncement';
 
-function Success() {
-  return <h2>Google Login Successful</h2>;
-}
+import { useLocation } from 'react-router-dom';
 
+function Success() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userId = queryParams.get('userId');
+
+  return (
+    <div>
+      <h1>Login Successful!</h1>
+      <p>User ID: {userId}</p>
+    </div>
+  );
+}
 function App() {
   return (
     <Router>

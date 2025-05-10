@@ -7,9 +7,11 @@ passport.use(new GoogleStrategy({
     callbackURL: '/auth/google/callback'
   },
   (accessToken, refreshToken, profile, done) => {
+    console.log("Google Profile:", profile);
     done(null, profile);
   }
 ));
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
+
