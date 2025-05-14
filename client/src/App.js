@@ -7,17 +7,23 @@ import Login from './components/Login/Login';
 import NoticesAndTaskCenter from './pages/NoticesAndTaskCenter/NoticesAndTaskCenter';
 import AddAnnouncement from './pages/AddAnnouncement/AddAnnouncement';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Success() {
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get('userId');
+
+  const goToAddAnnouncement = () => {
+    navigate('/announcements/new', { state: { userId } });
+  };
 
   return (
     <div>
       <h1>Login Successful!</h1>
       <p>User ID: {userId}</p>
+      {/* <button onClick={goToAddAnnouncement}>Go to Add Announcement</button> */}
     </div>
   );
 }

@@ -1,13 +1,14 @@
 const sendEmail = require('../utils/sendEmail');
 const supabase = require('../config/supabase');
 
-exports.googleCallback = async (req, res) => {
+exports.googleCallback = async (req, res,next) => {
   const email = req.user?.emails?.[0]?.value || req.body.email;
   // const email = req.user?.emails?.[0]?.value;
     const provider = 'google';
     const now = new Date().toISOString();
 
     console.log("Google Callback Email:", email);
+    
   if (!email) {
     return res.status(400).send('Email not found in Google profile');
   }
@@ -23,13 +24,12 @@ exports.googleCallback = async (req, res) => {
   else if(email.endsWith('@cse.mrt.ac.lk')) provider_type = 'CSE'  
   else provider_type = 'other';
 
-// Check if user exists in user table
+  // Check if user exists in user table
 const { data: existingUser, error: fetchError } = await supabase
 .from('User')
 .select('ID')
 .eq('Email', email)
 .single();
-
 
 
 if (fetchError && fetchError.code !== 'PGRST116') {
@@ -38,6 +38,7 @@ throw fetchError;
 let userId;
 if(!existingUser) {
   // If user doesn't exist, create a new user
+  console.log("User does not exist, creating new user");
   const { data: newUser, error: insertError } = await supabase
     .from('User')
     .insert([
@@ -77,6 +78,7 @@ if(!existingUser) {
           throw insertAuthError;
         }
   }else {
+    console.log('User exists, updating last sign-in');
     userId = existingUser.ID;
     // If user exists, update last sign-in time
     // Update last sign-in in auth_user
@@ -85,7 +87,10 @@ if(!existingUser) {
     .update({ 'Last Sign in': now })
     .eq('id', userId);
 
-  if (updateError) throw updateError;
+    if (updateError){
+      console.error('Error updating last sign-in:', updateError);
+      throw updateError;
+    } 
   }
 
 

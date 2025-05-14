@@ -16,7 +16,6 @@ exports.getAnnouncements = async (req, res, next) => {
     let query = supabase
       .from('announcement')
       .select(`
-        id,
         title,
         body,
         created_at,
@@ -52,41 +51,56 @@ exports.getAnnouncements = async (req, res, next) => {
 };
 
 
-
 exports.createAnnouncement = async (req, res, next) => {
-  const { title, summary, targetType, all, batch, course } = req.body;
-  const { userId } = req.query; // Ensure 'userId' is passed in the query string
+  console.log('REQ BODY:', req.body);
+  const { userId, title, summary, targetType, all, batch, course } = req.body;
 
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required' });
   }
 
+  const newAnnouncement = {
+    title: title,
+    body: summary,
+    created_at: new Date().toISOString(),
+    created_by: userId,
+    All: all,
+    batch: batch ? parseInt(batch) : null,
+    Course: course ? parseInt(course) : null,
+  };
+
+  console.log('payload:', newAnnouncement);
+
   try {
-    const dataToInsert = {
-      title,
-      body: summary,
-      created_by: userId,
-      created_at: new Date(),
-      all_participants: targetType === 'all' || all, // Check if it's all or specified in the body
-      batch_id: (targetType === "batch" || (targetType === "course" && batch)) ? batch : null,
-      course_id: targetType === 'course' ? course : null,
-    };
+    // Insert the announcement into the database
+    const insertResponse = await supabase
+      .from('Announcement')
+      .insert([newAnnouncement]);
 
-    const { data, error } = await supabase.from('announcement').insert([dataToInsert]).select();
+    // Log the response to check if data is returned
+    console.log("Insert Response:", insertResponse);
 
-    if (error) {
-      console.error("Error inserting announcement:", error); // Log error for debugging
-      return next(error); // Pass error to the error handling middleware
+    // Check for errors in the response
+    const { data, error: insertAnnouncementError } = insertResponse;
+
+    if (insertAnnouncementError) {
+      console.error("Error inserting Announcement:", insertAnnouncementError);
+      return res.status(400).json({ error: insertAnnouncementError.message });
     }
 
-    // If notification publishing is required
-    await publishNotification(data[0]);
+    // Ensure that 'data' is not null or empty
+    if (!data || data.length === 0) {
+      console.error("No data returned from insertion.");
+      return res.status(500).json({ error: "Announcement insertion returned no data" });
+    }
 
-    res.status(201).json(data[0]); // Send back the inserted data
+    // Proceed with sending notification and returning response
+    await publishNotification(data[0]);
+    res.status(201).json(data[0]);
+
   } catch (err) {
-    console.error("Server error:", err); // Log the error for debugging
+    console.error("Server error:", err);
     res.status(500).json({ error: err.message });
   }
 };
-
 

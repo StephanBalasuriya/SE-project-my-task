@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./AddAnnouncement.css";
-
-const userId = "wddwf6465";
+import { useLocation } from 'react-router-dom';
 
 const AnnouncementModal = ({ onClose }) => {
+  // const location = useLocation();
+  // const userId = location.state?.userId;
+const userId="2ed1647a-7be1-422c-8ca7-d556aaab68ea"
   const [course, setCourse] = useState("");
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -13,8 +15,8 @@ const AnnouncementModal = ({ onClose }) => {
   const [showCourseDropdown, setShowCourseDropdown] = useState(false);
   const [showBatchForCourse, setShowBatchForCourse] = useState(false);
 
-  const courses = ["Complete Financial Analyst Course", "All Courses", "Other Courses"];
-  const batches = ["Batch 1", "Batch 2", "Batch 3"];
+  const courses = [1, 2];
+  const batches = [1, 2, 3];
 
   useEffect(() => {
     setShowCourseDropdown(false);
@@ -26,8 +28,9 @@ const AnnouncementModal = ({ onClose }) => {
     e.preventDefault();
 
     const payload = {
-      title,
-      summary,
+      userId: userId,
+      title:title,
+      summary:summary,
       targetType: sendTo === 1 ? "all" : sendTo === 2 ? "batch" : "course",
       all: sendTo === 1,
       batch: sendTo === 2 || (sendTo === 3 && showBatchForCourse) ? batch : null,
@@ -35,14 +38,19 @@ const AnnouncementModal = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/api/announcements/addAnnouncement?user=${userId}`, {
-        method: "POST",
+      console.log("Payload:", payload);
+
+      
+      // const response = await fetch(`http://localhost:5000/api/announcements/addAnnouncement?userID=${userId}`, {
+      const response = await fetch(`http://localhost:5000/api/announcements/addAnnouncement`, {
+         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      console.log("Payload:", payload);
+      // console.log("userId:", userId);
 
       if (!response.ok) throw new Error("Failed to create announcement");
-
       const result = await response.json();
       console.log("Announcement created:", result);
       onClose();
